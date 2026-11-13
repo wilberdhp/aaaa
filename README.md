@@ -11,7 +11,7 @@ pagos a operarios, configuración y auditoría completa.
   NO suma al total que paga el cliente; se usa para la ganancia y para descontar la
   base del pago PORCENTAJE del operario. VENDEDOR y ADMIN pueden editarlo en el POS y
   **cada cambio queda en auditoría** (`MODIFICAR_COSTO_ITEM` con valor anterior/nuevo).
-  Si el ítem está en USD/EUR, se convierte a CUP con la tasa *snapshot* de la venta
+  Si el ítem está en USD/EUR, se convierte a CUP con la tasa _snapshot_ de la venta
   para el cálculo de pagos. Un costo mayor que el precio de venta solo muestra
   **advertencia roja** (la venta se permite: pérdida asumida por el taller).
 - **`VentaItem.descripcionAdicional`**: nota por línea (IMEI, falla, color…) editable
@@ -32,7 +32,6 @@ pagos a operarios, configuración y auditoría completa.
 - **Atajos nuevos en el POS:** `Ctrl+N` (nota de la línea seleccionada) y `Ctrl+C`
   (costo interno de la línea seleccionada — solo si NO hay texto seleccionado).
 
-
 ## Stack
 
 - **Next.js 16 (App Router) + TypeScript**
@@ -49,11 +48,11 @@ pagos a operarios, configuración y auditoría completa.
 
 ## Variables de entorno (`.env`)
 
-| Variable | Descripción | Ejemplo |
-|---|---|---|
-| `DATABASE_URL` | Cadena de conexión PostgreSQL | `postgresql://tereparo@localhost:5432/tereparo?schema=public` (dev, PostgreSQL embebido) o la del proveedor (prod) |
-| `AUTH_SECRET` | Secreto para firmar el JWT de sesión (generar con `openssl rand -hex 32`) | hex aleatorio |
-| `TZ` | Zona horaria del servidor (define el "día" de liquidación) | `America/Havana` |
+| Variable       | Descripción                                                               | Ejemplo                                                                                                            |
+| -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `DATABASE_URL` | Cadena de conexión PostgreSQL                                             | `postgresql://tereparo@localhost:5432/tereparo?schema=public` (dev, PostgreSQL embebido) o la del proveedor (prod) |
+| `AUTH_SECRET`  | Secreto para firmar el JWT de sesión (generar con `openssl rand -hex 32`) | hex aleatorio                                                                                                      |
+| `TZ`           | Zona horaria del servidor (define el "día" de liquidación)                | `America/Havana`                                                                                                   |
 
 ## Puesta en marcha (desarrollo)
 
@@ -125,12 +124,12 @@ tests/                      # money / pagos / liquidación / plantillas (unitari
 - **Tasas:** globales con historial completo; cualquier rol que vende puede actualizar;
   snapshot en cada venta y pago; el total se muestra en CUP y USD; el ticket solo en CUP.
 - **Liquidación diaria por taller/día** (`@@unique([tallerId, fecha])`):
-  - *VENDEDOR presencial:* regla grupal — el **total vendido del taller ese día** se paga
+  - _VENDEDOR presencial:_ regla grupal — el **total vendido del taller ese día** se paga
     ÍNTEGRO a cada operario vendedor activo del taller, incluido el que vendió 0.
-  - *INFORMÁTICO/ELECTRÓNICO:* acumulado individual por snapshot (FIJO×cant o %×(subtotal−costo interno), base mínima 0).
+  - _INFORMÁTICO/ELECTRÓNICO:_ acumulado individual por snapshot (FIJO×cant o %×(subtotal−costo interno), base mínima 0).
     El reparto equitativo se muestra como nota al pie de referencia (no afecta el monto).
-  - *VENDEDOR_ONLINE:* individual por sus propias ventas del día en ese taller.
-  - *ADMIN:* `porcentajeAdmin` × total vendido del día (línea en la liquidación).
+  - _VENDEDOR_ONLINE:_ individual por sus propias ventas del día en ese taller.
+  - _ADMIN:_ `porcentajeAdmin` × total vendido del día (línea en la liquidación).
   - Al cerrar: se bloquea (no se recalcula) y se generan comprobantes de pago únicos por
     operario con el contenido definido por rama.
 - **Auditoría:** todo cambio y todo acceso denegado queda en `AuditLog` con datos
@@ -153,39 +152,39 @@ tests/                      # money / pagos / liquidación / plantillas (unitari
 
 ### Paleta (del logotipo: rojo, blanco y negro)
 
-| Token | Valor | Uso |
-|---|---|---|
-| `brand-red` | `#E60000` | Botones primarios (Cobrar/Guardar/Confirmar), acentos, foco |
-| `brand-red-hover` | `#CC0000` | Hover de acciones primarias |
-| `brand-red-light` | `#FFEBEB` | Fondos de selección/alerta suave (modo claro) |
-| `brand-black` / `brand-dark` | `#121212` / `#1E1E1E` | Fondo/tarjetas del modo oscuro, textos principales |
-| `brand-gray` / `brand-border` | `#F5F5F5` / `#E0E0E0` | Fondo general y bordes (modo claro) |
-| `success` / `warning` / `info` | `#10B981` / `#F59E0B` / `#3B82F6` | Semánticos (con moderación) |
+| Token                          | Valor                             | Uso                                                         |
+| ------------------------------ | --------------------------------- | ----------------------------------------------------------- |
+| `brand-red`                    | `#E60000`                         | Botones primarios (Cobrar/Guardar/Confirmar), acentos, foco |
+| `brand-red-hover`              | `#CC0000`                         | Hover de acciones primarias                                 |
+| `brand-red-light`              | `#FFEBEB`                         | Fondos de selección/alerta suave (modo claro)               |
+| `brand-black` / `brand-dark`   | `#121212` / `#1E1E1E`             | Fondo/tarjetas del modo oscuro, textos principales          |
+| `brand-gray` / `brand-border`  | `#F5F5F5` / `#E0E0E0`             | Fondo general y bordes (modo claro)                         |
+| `success` / `warning` / `info` | `#10B981` / `#F59E0B` / `#3B82F6` | Semánticos (con moderación)                                 |
 
 - **Modo claro (por defecto):** fondo `brand-gray`, tarjetas blancas, texto negro. **Modo oscuro:**
   fondo negro, tarjetas `brand-dark`, texto blanco (interruptor en la barra superior).
 - **Foco visible:** anillo rojo (`ring`) con offset en todos los interactivos (WCAG);
-  trampa de foco y `Esc` en los modales; *skip link* "Saltar al contenido principal".
+  trampa de foco y `Esc` en los modales; _skip link_ "Saltar al contenido principal".
 - **Números:** `tabular-nums` en POS y tablas de dinero; fuente **Inter**.
-- **Toasts** (nunca `window.alert`), *skeletons*/spinners en acciones, y confirmación
+- **Toasts** (nunca `window.alert`), _skeletons_/spinners en acciones, y confirmación
   **en dos pasos** para acciones peligrosas (desactivar producto, cerrar liquidación…).
 
 ### Atajos de teclado (resumen — pulse `Shift + ?` en la app)
 
-| Ámbito | Atajo | Acción |
-|---|---|---|
-| Global | `Alt + 1…7` | Panel · POS · Inventario · Ventas · Clientes · Liquidaciones · Configuración (ADMIN) |
-| Global | `Shift + ?` | Modal con la lista completa de atajos |
-| Global | `Esc` | Cerrar modales/dropdowns o limpiar la búsqueda |
-| POS | `F2` / `F4` | Enfocar buscador / nuevo carrito |
-| POS | `Ctrl + Tab` (`Ctrl + Shift + Tab`) | Siguiente (anterior) carrito — *ver nota* |
-| POS | `Enter` (buscador) | Agrega el producto del código exacto o el primer resultado |
-| POS | `F8` / `F9` | Cliente / panel de cobro |
-| POS | `Enter` (cobro) | Confirma la venta si el monto cubre el total e imprime el ticket |
-| POS | `↑ ↓` `+` `−` | Navegar líneas del carrito / cambiar cantidad |
-| POS | `Ctrl + Supr` / `Ctrl + E` | Eliminar línea / editar precio |
-| Formularios | `Ctrl + S` | Guardar (producto, cliente, taller, usuario, operario, ajustes) |
-| Tablas | `↑ ↓` `Enter` `Supr` | Navegar filas / abrir detalle / desactivar con confirmación |
+| Ámbito      | Atajo                               | Acción                                                                               |
+| ----------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
+| Global      | `Alt + 1…7`                         | Panel · POS · Inventario · Ventas · Clientes · Liquidaciones · Configuración (ADMIN) |
+| Global      | `Shift + ?`                         | Modal con la lista completa de atajos                                                |
+| Global      | `Esc`                               | Cerrar modales/dropdowns o limpiar la búsqueda                                       |
+| POS         | `F2` / `F4`                         | Enfocar buscador / nuevo carrito                                                     |
+| POS         | `Ctrl + Tab` (`Ctrl + Shift + Tab`) | Siguiente (anterior) carrito — _ver nota_                                            |
+| POS         | `Enter` (buscador)                  | Agrega el producto del código exacto o el primer resultado                           |
+| POS         | `F8` / `F9`                         | Cliente / panel de cobro                                                             |
+| POS         | `Enter` (cobro)                     | Confirma la venta si el monto cubre el total e imprime el ticket                     |
+| POS         | `↑ ↓` `+` `−`                       | Navegar líneas del carrito / cambiar cantidad                                        |
+| POS         | `Ctrl + Supr` / `Ctrl + E`          | Eliminar línea / editar precio                                                       |
+| Formularios | `Ctrl + S`                          | Guardar (producto, cliente, taller, usuario, operario, ajustes)                      |
+| Tablas      | `↑ ↓` `Enter` `Supr`                | Navegar filas / abrir detalle / desactivar con confirmación                          |
 
 > **Nota `Ctrl + Tab`:** algunos navegadores lo reservan para cambiar de pestaña y no lo
 > entregan a la página; en ese caso use los botones de pestaña del carrito o `F4`.
@@ -195,7 +194,7 @@ tests/                      # money / pagos / liquidación / plantillas (unitari
 El buscador del POS está siempre listo (auto-foco al entrar y `F2`): los lectores HID actúan
 como teclado (código + `Enter`). Con `Enter`: si el código existe se agrega al instante y el
 campo se limpia (beep agudo); si no, toast de error manteniendo el foco (tono grave). La
-búsqueda manual usa *debounce* de 300 ms. El lector se entrena con los códigos internos
+búsqueda manual usa _debounce_ de 300 ms. El lector se entrena con los códigos internos
 `T{n}-{secuencial}` y las etiquetas CODE128 se imprimen desde Inventario → botón etiqueta.
 
 ## Módulos
